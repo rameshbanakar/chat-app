@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoClose } from "react-icons/io5";
 import uploadFile from "../helpers/UploadFiles";
 const Register = () => {
@@ -11,10 +11,12 @@ const Register = () => {
     password: "",
     profile_pic: "",
   });
+  const [uploadphto, setUploadPhoto] = useState("");
+  const navigate=useNavigate()
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
-  const [uploadphto, setUploadPhoto] = useState("");
+  
   const handleUploadPhoto = async (e) => {
     const file = e.target.files[0];
 
@@ -35,8 +37,17 @@ const Register = () => {
       const response = await axios.post(url, data);
       console.log(response);
       toast.success(response?.data?.message);
+      if (response.data.success) {
+        setData({
+          name: "",
+          email: "",
+          password: "",
+          profile_pic: "",
+        });
+      }
+      navigate("/email")
     } catch (error) {
-      toast.error(error?.message) 
+      toast.error(error?.message);
     }
   };
   return (
