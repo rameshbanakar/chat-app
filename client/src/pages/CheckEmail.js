@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 
-
 const CheckEmail = () => {
   const [data, setData] = useState({
     email: "",
@@ -21,14 +20,18 @@ const CheckEmail = () => {
     try {
       const response = await axios.post(url, data);
       console.log(response);
-      toast.success(response?.data?.message);
+      if (response?.data?.error) {
+        toast.error(response.data.message);
+      } else {
+        toast.success(response?.data?.message);
+        navigate("/password",{state:response.data});
+      }
+
       if (response.data.success) {
         setData({
-          
           email: "",
         });
       }
-      navigate("/password");
     } catch (error) {
       toast.error(error?.message);
     }
@@ -36,11 +39,11 @@ const CheckEmail = () => {
   return (
     <div className="mt-5">
       <div className="bg-white w-full max-w-md  rounded overflow-hidden p-4 mx-auto">
-        <div className="w-fit mx-auto">
-          <FaUserCircle size={80}/>
+        <div className="w-fit mx-auto mb-2">
+          <FaUserCircle size={80} />
         </div>
         <h3>Welcome to ChatApp!</h3>
-        <form className="grid gap-3 mt-5" onSubmit={handleSubmit}>
+        <form className="grid gap-3 mt-3" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <label htmlFor="email">E-mail:</label>
             <input
@@ -55,7 +58,7 @@ const CheckEmail = () => {
             />
           </div>
           <button className="bg-primary text-lg px-4 py-1 hover:bg-secondary rounded mt-3 font-bold text-white leading-relaxed">
-            Register
+            Let's Go
           </button>
         </form>
         <p className="my-3 text-center">

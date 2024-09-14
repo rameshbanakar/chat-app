@@ -36,7 +36,12 @@ const Register = () => {
     try {
       const response = await axios.post(url, data);
       console.log(response);
-      toast.success(response?.data?.message);
+      if(response.data.error){
+        toast.error(response.data.message)
+      }else{
+          toast.success(response?.data?.message);
+      }
+      
       if (response.data.success) {
         setData({
           name: "",
@@ -44,8 +49,9 @@ const Register = () => {
           password: "",
           profile_pic: "",
         });
+        navigate("/email");
       }
-      navigate("/email")
+     
     } catch (error) {
       toast.error(error?.message);
     }

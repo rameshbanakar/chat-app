@@ -6,8 +6,7 @@ exports.register = async (req, res) => {
     const checkMail = await UserModel.findOne({ email });
     if (checkMail) {
       return res
-        .status(400)
-        .send({ message: "user alredy registered", error: true });
+        .json({ message: "user alredy registered", error: true });
     }
     const hashpass=await bcrypt.hash(password,10)
     const user=new UserModel({email,password,name,profile_pic})
