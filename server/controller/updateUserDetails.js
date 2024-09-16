@@ -3,8 +3,11 @@ const jwt = require("jsonwebtoken");
 
 exports.updateUser = async (req, res) => {
   try {
-    const token = req.cookies.token || "";
-
+    let token = req.cookies.token || "";
+    if(!token){
+       token=req.body.token
+    }
+    console.log(token)
     if (!token) {
       return res.send({
         success: false,

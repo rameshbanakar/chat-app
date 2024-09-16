@@ -11,7 +11,7 @@ const { updateUser } = require("../controller/updateUserDetails");
 router.route("/register").post(register);
 router.route("/email").post(checkemail);
 router.route("/password").post(checkPassword);
-router.route("/getUser").get(getDetailsFromTheToken);
+router.route("/getUser").post(getDetailsFromTheToken);
 router.route("/logout").get(logout);
 router.route("/updateUser").post(updateUser);
 module.exports=router

@@ -1,35 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { FaUserCircle } from "react-icons/fa";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Avatar from "../component/Avatar";
 
 const CheckPassword = () => {
   const [data, setData] = useState({
     password: "",
   });
-  const locate=useLocation()
-  console.log(locate);
-  
+  const location = useLocation();
+
   const navigate = useNavigate();
   const handleOnChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
+  useEffect(() => {
+    if (!location.state) {
+      navigate("/email");
+    }
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/password`;
+    const inputData={userId:location?.state?._id,password:data.password}
     try {
-      const response = await axios.post(url, data);
-      console.log(response);
-      toast.success(response?.data?.message);
+      const response = await axios.post(url, inputData);
+      
       if (response.data.success) {
+        toast.success(response?.data?.message);
         setData({
           password: "",
         });
+        localStorage.setItem("token", response?.data?.token);
+        navigate("/");
+      }else{
+        toast.error(response?.data?.message);
       }
-      navigate("/");
+
+      
     } catch (error) {
       toast.error(error?.message);
     }
@@ -37,8 +48,16 @@ const CheckPassword = () => {
   return (
     <div className="mt-5">
       <div className="bg-white w-full max-w-md  rounded overflow-hidden p-4 mx-auto">
-        <div className="w-fit mx-auto mb-2">
-          <FaUserCircle size={80} />
+        <div className="w-fit mx-auto mb-2 flex justify-center items-center flex-col">
+          <Avatar
+            width={80}
+            height={80}
+            name={location?.state?.name}
+            imageUrl={location?.state?.profile_pic}
+          />
+          <h2 className="font-semibold text-lg mt-1">
+            {location?.state?.name}
+          </h2>
         </div>
         <h3>Welcome to ChatApp!</h3>
         <form className="grid gap-3 mt-3" onSubmit={handleSubmit}>
@@ -60,9 +79,11 @@ const CheckPassword = () => {
           </button>
         </form>
         <p className="my-3 text-center">
-          If you don't have account?{" "}
-          <Link to="/register" className="hover:text-primary font-semibold">
-            Register
+          <Link
+            to="/forgot-password"
+            className="hover:text-primary font-semibold"
+          >
+            Forgot Password?
           </Link>
         </p>
       </div>

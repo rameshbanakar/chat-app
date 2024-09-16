@@ -57,8 +57,12 @@ exports.checkPassword = async (req, res) => {
 };
 
 exports.getDetailsFromTheToken = async (req,res) => {
+  console.log(req.body)
   try {
-    const token=req.cookies.token||""
+    let token=req.cookies.token||""
+     if (!token) {
+       token = req.body.token;
+     }
     if(!token){
       return res.send({
         success:false,
