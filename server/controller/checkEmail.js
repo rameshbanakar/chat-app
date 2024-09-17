@@ -65,7 +65,7 @@ exports.getDetailsFromTheToken = async (req,res) => {
      }
     if(!token){
       return res.send({
-        success:false,
+        logout:true,
         message:"user need to login"
       })
     }

@@ -4,8 +4,11 @@ import toast from "react-hot-toast";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Avatar from "../component/Avatar";
+import { useDispatch } from "react-redux";
+import { setToken, setUser } from "../redux/UserSlice";
 
 const CheckPassword = () => {
+  const dispatch=useDispatch()
   const [data, setData] = useState({
     password: "",
   });
@@ -30,6 +33,9 @@ const CheckPassword = () => {
       const response = await axios.post(url, inputData);
       
       if (response.data.success) {
+        dispatch(setUser(response.data.data))
+        dispatch(setToken(response.data.token))
+        console.log("password page",response)
         toast.success(response?.data?.message);
         setData({
           password: "",
