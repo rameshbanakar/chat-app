@@ -43,7 +43,7 @@ function Avatar({ name, email, imageUrl, width, height }) {
         <div
           className={`text-slate-800 overflow-hidden rounded-full shadow border text-xl font-bold ${bg_color[randomNumber]}`}
         >
-          <FaUserCircle size={80} />
+          <FaUserCircle size={width} />
         </div>
       )}
     </div>

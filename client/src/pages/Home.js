@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useNavigate } from "react-router-dom";
 import { logout, setToken, setUser } from '../redux/UserSlice'
+import SideBar from '../component/SideBar';
 
 function Home() {
   const user=useSelector(state=>state.user)
@@ -45,7 +46,7 @@ function Home() {
     <div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
         {/*message section */}
         <section className='bg-white'>
-          sidebar
+          <SideBar/>
         </section>
         <section>
             <Outlet/>
