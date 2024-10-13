@@ -16,6 +16,7 @@ exports.updateUser = async (req, res) => {
     }
     const getUser = await jwt.verify(token, process.env.SECRET_KEY);
     const user = await UserModel.findOneAndUpdate({ _id: getUser.id.id },req.body)
+    console.log(user)
     res.status(200).json({
         success:true,
         message:"user update sucess",
