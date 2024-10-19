@@ -1,9 +1,14 @@
 import React from "react";
 import Avatar from "./Avatar";
-function UsersFound({ user }) {
+import { Link } from "react-router-dom";
+function UsersFound({ user, onClose }) {
   // console.log(user)
   return (
-    <div className="flex m-2">
+    <Link
+      to={"/" + user?._id}
+      onClick={onClose}
+      className="flex items-center gap-3 p-2 hover:border-2 hover:border-primary rounded cursor-pointer"
+    >
       <div>
         <Avatar
           width={50}
@@ -13,12 +18,12 @@ function UsersFound({ user }) {
         />
       </div>
       <div className="px-2">
-        <div className="font-semibold">
+        <div className="font-semibold text-ellipsis line-clamp-1">
           {user?.name}
         </div>
-        <p className="text-sm">{user?.email}</p>
+        <p className="text-sm text-ellipsis line-clamp-1">{user?.email}</p>
       </div>
-    </div>
+    </Link>
   );
 }
 

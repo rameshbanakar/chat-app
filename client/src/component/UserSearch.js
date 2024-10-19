@@ -4,7 +4,8 @@ import Spinner from "./Spinner";
 import UsersFound from "./UsersFound";
 import toast from "react-hot-toast";
 import axios from "axios";
-function UserSearch() {
+import { RxCross2 } from "react-icons/rx";
+function UserSearch({onClose}) {
   const [searchUser, setSearchUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -42,7 +43,7 @@ function UserSearch() {
     setSearchValue(e.target.value);
     // console.log(searchValue);
   };
-  console.log("searchUser", searchUser);
+  // console.log("searchUser", searchUser);
   return (
     <div className="fixed left-0 right-0 top-0 bottom-0 bg-slate-700 bg-opacity-40 p-2">
       <div className="w-full max-w-lg mx-auto mt-10">
@@ -74,8 +75,17 @@ function UserSearch() {
 
           {searchUser.length > 0 &&
             !loading &&
-            searchUser.map((user, index) => <UsersFound key={user._id} user={user}/>)}
+            searchUser.map((user, index) => (
+              <UsersFound key={user._id} user={user} onClose={onClose} />
+            ))}
         </div>
+      </div>
+      <div className="absolute top-0 right-0 p-5">
+        <RxCross2
+          size={35}
+          onClick={onClose}
+          className="cursor-pointer text-xl hover:text-white "
+        />
       </div>
     </div>
   );
