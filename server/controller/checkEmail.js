@@ -57,7 +57,7 @@ exports.checkPassword = async (req, res) => {
 };
 
 exports.getDetailsFromTheToken = async (req,res) => {
-  console.log(req.body)
+  // console.log(req.body)
   try {
     let token=req.cookies.token||""
      if (!token) {
