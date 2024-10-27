@@ -15,6 +15,7 @@ function UsersFound({ user, onClose }) {
           imageUrl={user.profile_pic}
           height={50}
           name={user.name}
+          userId={user?._id}
         />
       </div>
       <div className="px-2">
