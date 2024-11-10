@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { logout, setOnlineUser, setToken, setUser } from "../redux/UserSlice";
+import { logout, setOnlineUser, setSocketConnection, setToken, setUser } from "../redux/UserSlice";
 import SideBar from "../component/SideBar";
 import logo from "../asset/assets/logo.png";
 import io from "socket.io-client";
@@ -12,7 +12,7 @@ function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("redux user", user);
+  // console.log("redux user", user);
   useEffect(() => {
     const fetchUser = async () => {
       const token = localStorage.getItem("token");
@@ -29,7 +29,7 @@ function Home() {
 
       try {
         const response = await axios.post(url, { token: token }, config);
-        console.log("response", response);
+        // console.log("response", response);
         if (response.data.logout) {
           dispatch(logout());
           navigate("/email");
@@ -51,6 +51,7 @@ function Home() {
     socketConnection.on("onlineUsers", (data) => {
       dispatch(setOnlineUser(data))
     });
+    dispatch(setSocketConnection(socketConnection));
     return ()=>{
       socketConnection.disconnect()
     }
