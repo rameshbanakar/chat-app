@@ -9,8 +9,9 @@ import { FaPlus } from "react-icons/fa6";
 import { IoImageSharp } from "react-icons/io5";
 import { FaVideo } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
-import Spinner from "./Spinner"
+import Spinner from "./Spinner";
 import uploadFile from "../helpers/UploadFiles";
+import backgroundImage from "../../src/asset/assets/wallapaper.jpeg";
 const MessagePage = () => {
   const params = useParams();
   const [dataUser, setDataUser] = useState({
@@ -28,7 +29,7 @@ const MessagePage = () => {
   const socketConnection = useSelector((state) => state.user.socketConnection);
   const user = useSelector((state) => state.user);
   const [openImageVideoUpload, setOpenImageVideoUpload] = useState(false);
-  const [loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   // console.log(params);
   useEffect(() => {
     if (socketConnection) {
@@ -46,11 +47,12 @@ const MessagePage = () => {
 
   const handleUploadImage = async (e) => {
     const file = e.target.files[0];
-    setLoading(true)
+    setLoading(true);
     const uploadImage = await uploadFile(file);
-    if(uploadImage.secure_url){
-      setLoading(false)
+    if (uploadImage.secure_url) {
+      setLoading(false);
     }
+    setOpenImageVideoUpload(false);
     // console.log("uploadImage", uploadImage.secure_url);
     setMessageData((prevData) => {
       return {
@@ -60,41 +62,42 @@ const MessagePage = () => {
     });
   };
 
-  const handleClearUploadImage=()=>{
+  const handleClearUploadImage = () => {
     setMessageData((prevData) => {
       return {
         ...prevData,
-        imageURL:"",
+        imageURL: "",
       };
     });
-  }
-  
-  const handleClearUploadVideo=()=>{
+  };
+
+  const handleClearUploadVideo = () => {
     setMessageData((prevData) => {
       return {
         ...prevData,
         videoURL: "",
       };
     });
-  }
+  };
 
   const handleUploadVideo = async (e) => {
     const file = e.target.files[0];
-    setLoading(true)
+    setLoading(true);
     const uploadImage = await uploadFile(file);
     // console.log("uploadImage", uploadImage.secure_url);
-    if (uploadImage?.secure_url){
-      setLoading(false)
+    if (uploadImage?.secure_url) {
+      setLoading(false);
     }
-      setMessageData((prevData) => {
-        return {
-          ...prevData,
-          videoURL: uploadImage?.secure_url,
-        };
-      });
+    setOpenImageVideoUpload(false);
+    setMessageData((prevData) => {
+      return {
+        ...prevData,
+        videoURL: uploadImage?.secure_url,
+      };
+    });
   };
   return (
-    <div className="">
+    <div className="bg-no-repeat bg-cover bg-opacity-40" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <header className="sticky top-0 h-16 bg-white flex justify-between items-center px-4">
         <div className="flex items-center gap-3">
           <Link className="lg:hidden" to={"/"}>
