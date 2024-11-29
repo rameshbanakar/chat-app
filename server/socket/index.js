@@ -4,7 +4,7 @@ const http = require("http");
 const app = express();
 const UserModel = require("../model/UserModel");
 const jwt = require("jsonwebtoken");
-
+const getConversation=require("../helpers/getConversation")
 const {
   conversationModel,
   messageModel,
@@ -48,6 +48,20 @@ io.on("connection", async (socket) => {
       online: onlineUser.has(userId),
     };
     socket.emit("message-user", payload);
+
+    const getConversationMessage = await conversationModel
+      .findOne({
+        $or: [
+          { sender: user?._id, receiver: userId },
+          { sender: userId, receiver: user?._id },
+        ],
+      })
+      .populate("message")
+      .sort({ updatedAt: -1 });
+      // console.log(getConversationMessage?.message);
+    
+      io.emit("message", getConversationMessage?.message);
+
   });
 
   // new message
@@ -74,7 +88,7 @@ io.on("connection", async (socket) => {
     });
     
     const saveMessage=await message.save()
-    console.log(saveMessage)
+    // console.log(saveMessage)
     const updateConversation = await conversationModel.updateOne(
       { _id: conversation._id },
       { "$push": { message: saveMessage?._id } }
@@ -90,13 +104,23 @@ io.on("connection", async (socket) => {
       .populate("message")
       .sort({updatedAt:-1});
 
-      console.log(getConversationMessage);
+      // console.log(getConversationMessage);
 
       io.to(data?.sender).emit("message", getConversationMessage.message);
       io.to(data?.receiver).emit("message", getConversationMessage.message);
     
 
   });
+
+  //side bar 
+   socket.on("sidebar", async (currentUserId) => {
+    console.log("current user", currentUserId);
+
+    const conversation = await getConversation(currentUserId);
+    console.log("conversation", conversation);
+
+     socket.emit("conversation", conversation);
+   });
 
    
   //disconnect the user

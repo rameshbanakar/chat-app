@@ -51,12 +51,11 @@ const MessagePage = () => {
 
       socketConnection.on("message-user", (data) => {
         setDataUser(data);
-        console.log("message-user", data);
+        // console.log("message-user", data);
       });
 
       socketConnection.on("message", (data) => {
-        console.log("message");
-        console.log(data);
+        
         setAllMessage(data);
       });
     }
@@ -189,7 +188,7 @@ const MessagePage = () => {
       <section className="h-[calc(100vh-128px)] overflow-x-hidden overflow-y-scroll scrollbar relative">
         {/* showing all messages here */}
         <div ref={currentMessage} className="flex flex-col gap-2 mx-3 py-2">
-          {allMessage.map((msg, index) => {
+          {allMessage?.map((msg, index) => {
             return (
               <div
                 className={`bg-white p-1 rounded w-fit py-1 max-w-[250px] md:max-w-sm lg:max-w-md ${
